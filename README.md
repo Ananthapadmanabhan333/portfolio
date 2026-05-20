@@ -8,7 +8,7 @@
 
 **A premium, hand-crafted single-page portfolio featuring glassmorphism, 3D card tilt, animated terminal, and a fully filterable index of all GitHub repositories.**
 
-[🌐 Live Preview](http://localhost:8080) · [💼 GitHub Profile](https://github.com/Ananthapadmanabhan333)
+[🌐 Live Portfolio](https://ananthapadmanabhan333.github.io/portfolio/) · [💼 GitHub Profile](https://github.com/Ananthapadmanabhan333)
 
 </div>
 

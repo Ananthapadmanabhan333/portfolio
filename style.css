@@ -48,7 +48,7 @@ html {
     font-size: 16px;
     background-color: var(--color-bg-base);
     color: var(--color-text-white);
-    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -60,6 +60,16 @@ body {
     background: radial-gradient(circle at 50% 50%, #200207 0%, #080002 100%);
     position: relative;
     overflow-x: hidden;
+}
+
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* GPU Hardware Acceleration for Smooth Rendering & Scrolling */
+.project-card, .index-card, .leadership-card {
+    will-change: transform, box-shadow;
 }
 
 main {

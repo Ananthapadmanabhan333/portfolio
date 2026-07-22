@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initCard3DTilt();
     initProjectFilters();
     initSmoothScroll();
+    initMobileMenu();
+    initScrollspy();
+    initBackToTop();
 });
 
 /* -------------------------------------------------------------
@@ -221,10 +224,107 @@ function initSmoothScroll() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                targetElement.scrollIntoView({
+                const headerOffset = 90; // Height of fixed header
+                const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                const offsetPosition = elementPosition - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
                     behavior: "smooth"
                 });
             }
+        });
+    });
+}
+
+/* -------------------------------------------------------------
+   7. MOBILE NAVIGATION OVERLAY DRAWER
+   ------------------------------------------------------------- */
+function initMobileMenu() {
+    const toggleBtn = document.querySelector(".mobile-nav-toggle");
+    const navMenu = document.querySelector(".nav");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    if (!toggleBtn || !navMenu) return;
+
+    toggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+        toggleBtn.setAttribute("aria-expanded", !isExpanded);
+        toggleBtn.classList.toggle("active");
+        navMenu.classList.toggle("active");
+        document.body.classList.toggle("no-scroll");
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener("click", (e) => {
+        if (navMenu.classList.contains("active") && !navMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+            toggleBtn.setAttribute("aria-expanded", "false");
+            toggleBtn.classList.remove("active");
+            navMenu.classList.remove("active");
+            document.body.classList.remove("no-scroll");
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            toggleBtn.setAttribute("aria-expanded", "false");
+            toggleBtn.classList.remove("active");
+            navMenu.classList.remove("active");
+            document.body.classList.remove("no-scroll");
+        });
+    });
+}
+
+/* -------------------------------------------------------------
+   8. ACTIVE SECTION LINK HIGHLIGHTING (SCROLLSPY)
+   ------------------------------------------------------------- */
+function initScrollspy() {
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-link");
+    
+    if (sections.length === 0 || navLinks.length === 0) return;
+
+    window.addEventListener("scroll", () => {
+        let currentSectionId = "";
+        const scrollPosition = window.scrollY + 120; // Scroll offset matching header
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                currentSectionId = section.getAttribute("id");
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${currentSectionId}`) {
+                link.classList.add("active");
+            }
+        });
+    });
+}
+
+/* -------------------------------------------------------------
+   9. FLOATING BACK TO TOP TRIGGER
+   ------------------------------------------------------------- */
+function initBackToTop() {
+    const backToTopBtn = document.getElementById("back-to-top");
+    if (!backToTopBtn) return;
+    
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 500) {
+            backToTopBtn.classList.add("visible");
+        } else {
+            backToTopBtn.classList.remove("visible");
+        }
+    });
+    
+    backToTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
         });
     });
 }

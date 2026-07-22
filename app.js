@@ -144,11 +144,19 @@ function initTerminalTyping() {
    4. 3D GLASS CARD MAGNETIC PARALLAX TILT
    ------------------------------------------------------------- */
 function initCard3DTilt() {
-    const cards = document.querySelectorAll(".project-card, .index-card, .leadership-card");
+    const cards = document.querySelectorAll(".project-card, .leadership-card");
     
     cards.forEach(card => {
+        let rect = null;
+        
+        card.addEventListener("mouseenter", () => {
+            rect = card.getBoundingClientRect();
+        });
+        
         card.addEventListener("mousemove", (e) => {
-            const rect = card.getBoundingClientRect();
+            if (!rect) {
+                rect = card.getBoundingClientRect();
+            }
             const x = e.clientX - rect.left; 
             const y = e.clientY - rect.top;  
             
@@ -167,6 +175,7 @@ function initCard3DTilt() {
         });
         
         card.addEventListener("mouseleave", () => {
+            rect = null;
             card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
             
             const glow = card.querySelector(".project-card-glow");
